@@ -477,7 +477,8 @@ class HealthDataWriter(
      * Writes blood pressure measurement with both systolic and diastolic values. Creates a single
      * BloodPressureRecord containing both pressure readings taken at the same time point.
      *
-     * @param call Method call containing 'systolic', 'diastolic', 'startTime', 'recordingMethod'
+     * @param call Method call containing 'systolic', 'diastolic', 'startTime', 'recordingMethod',
+     * and optional 'bodyPosition' and 'measurementLocation' (Health Connect int constants)
      * @param result Flutter result callback returning boolean success status
      */
     fun writeBloodPressure(call: MethodCall, result: Result) {
@@ -488,6 +489,10 @@ class HealthDataWriter(
         val clientRecordId: String? = call.argument<String>("clientRecordId")
         val clientRecordVersion: Double? = call.argument<Double>("clientRecordVersion")
         val deviceType: Int? = call.argument<Int>("deviceType")
+        val bodyPosition = call.argument<Int>("bodyPosition")
+                ?: BloodPressureRecord.BODY_POSITION_UNKNOWN
+        val measurementLocation = call.argument<Int>("measurementLocation")
+                ?: BloodPressureRecord.MEASUREMENT_LOCATION_UNKNOWN
 
         scope.launch {
             try {
@@ -503,6 +508,8 @@ class HealthDataWriter(
                                         time = startTime,
                                         systolic = Pressure.millimetersOfMercury(systolic),
                                         diastolic = Pressure.millimetersOfMercury(diastolic),
+                                        bodyPosition = bodyPosition,
+                                        measurementLocation = measurementLocation,
                                         zoneOffset = null,
                                         metadata = metadata,
                                 ),

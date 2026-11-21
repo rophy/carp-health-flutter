@@ -120,6 +120,9 @@ class HealthDataPoint {
       HealthDataType.MENSTRUATION_FLOW => MenstruationFlowHealthValue.fromHealthDataPoint(dataPoint),
       HealthDataType.ACTIVITY_INTENSITY => ActivityIntensityHealthValue.fromHealthDataPoint(dataPoint),
       HealthDataType.SKIN_TEMPERATURE => SkinTemperatureHealthValue.fromHealthDataPoint(dataPoint),
+      HealthDataType.BLOOD_PRESSURE_SYSTOLIC ||
+      HealthDataType.BLOOD_PRESSURE_DIASTOLIC =>
+        BloodPressureHealthValue.fromHealthDataPoint(dataPoint),
       _ => NumericHealthValue.fromHealthDataPoint(dataPoint),
     };
 
